@@ -1,4 +1,52 @@
-const statusMessage = "Innovating the future of Discord automation.";
+/*
+
+☆.。.:*・°☆.。.:*・°☆.。.:*・°☆.。.:*・°☆
+                                                 
+  _________ ___ ___ ._______   _________    
+ /   _____//   |   \|   \   \ /   /  _  \   
+ \_____  \/    ~    \   |\   Y   /  /_\  \  
+ /        \    Y    /   | \     /    |    \ 
+/_______  /\___|_  /|___|  \___/\____|__  / 
+        \/       \/                     \/  
+                    
+DISCORD :  https://discord.com/invite/xQF9f9yUEM                   
+YouTube : https://www.youtube.com/@GlaceYT                         
+                                                                       
+☆.。.:*・°☆.。.:*・°☆.。.:*・°☆.。.:*・°☆
+
+
+*/
+const { Client, GatewayIntentBits, ActivityType } = require('discord.js');
+require('dotenv').config();
+const express = require('express');
+const path = require('path');
+
+const client = new Client({
+  intents: [
+    GatewayIntentBits.Guilds
+  ],
+});
+
+const app = express();
+const port = 3000;
+app.get('/', (req, res) => {
+  const imagePath = path.join(__dirname, 'index.html');
+  res.sendFile(imagePath);
+});
+app.listen(port, () => {
+  console.log('\x1b[36m[ SERVER ]\x1b[0m', '\x1b[32m SH : http://localhost:' + port + ' ✅\x1b[0m');
+});
+
+// Fixed status message and type
+function updateStatus() {
+  const currentStatus = "Innovating the future of Discord automation.";
+  const currentType = 'dnd';
+  client.user.setPresence({
+    activities: [{ name: currentStatus, type: ActivityType.Custom }],
+    status: currentType,
+  });
+  console.log('\x1b[33m[ STATUS ]\x1b[0m', `Updated status to: ${currentStatus} (${currentType})`);
+}
 
 async function login() {
   try {
@@ -12,17 +60,35 @@ async function login() {
   }
 }
 
-function setFixedStatus() {
-  client.user.setPresence({
-    activities: [{ name: statusMessage, type: ActivityType.Custom }],
-    status: 'dnd',
-  });
-  console.log('\x1b[33m[ STATUS ]\x1b[0m', `Set status to: ${statusMessage} (dnd)`);
+function heartbeat() {
+  setInterval(() => {
+    console.log('\x1b[35m[ HEARTBEAT ]\x1b[0m', `Bot is alive at ${new Date().toLocaleTimeString()}`);
+  }, 30000);
 }
 
 client.once('ready', () => {
   console.log('\x1b[36m[ INFO ]\x1b[0m', `\x1b[34mPing: ${client.ws.ping} ms \x1b[0m`);
-  setFixedStatus();
+  updateStatus(); // Set fixed status
+  heartbeat(); // Keeps checking bot alive status every 30 seconds
 });
 
 login();
+
+/*
+
+☆.。.:*・°☆.。.:*・°☆.。.:*・°☆.。.:*・°☆
+                                                 
+  _________ ___ ___ ._______   _________    
+ /   _____//   |   \|   \   \ /   /  _  \   
+ \_____  \/    ~    \   |\   Y   /  /_\  \  
+ /        \    Y    /   | \     /    |    \ 
+/_______  /\___|_  /|___|  \___/\____|__  / 
+        \/       \/                     \/  
+                    
+DISCORD :  https://discord.com/invite/xQF9f9yUEM                   
+YouTube : https://www.youtube.com/@GlaceYT                         
+                                                                       
+☆.。.:*・°☆.。.:*・°☆.。.:*・°☆.。.:*・°☆
+
+
+*/
